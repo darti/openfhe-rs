@@ -8,10 +8,8 @@ const OPENFHE_CORE: &str = "OPENFHEcore";
 const OPENFHE_PKE: &str = "OPENFHEpke";
 const OPENFHE_BIN: &str = "OPENFHEbinfhe";
 
-//INSTALL_INCLUDE_DIR:PATH=include/openfhe
-
-fn main() {
-    let dst = Config::new("openfhe-development")
+fn build_openfhe() -> PathBuf {
+    let dst = Config::new("openfhe")
         .define("BUILD_STATIC", "ON")
         .define("BUILD_SHARED", "OFF")
         .define("BUILD_BENCHMARKS", "OFF")
@@ -23,12 +21,16 @@ fn main() {
     println!("cargo:rustc-link-search=native={}/build/lib", dst.display());
     println!("cargo:rustc-link-lib=static={}_static", OPENFHE_CORE);
 
-    // Tell cargo to invalidate the built crate whenever the wrapper changes
-    println!("cargo:rerun-if-changed=wrapper.h");
+    dst
+}
 
-    // The bindgen::Builder is the main entry point
-    // to bindgen, and lets you build up options for
-    // the resulting bindings.
+fn build_wrapper(dst: PathBuf) -> PathBuf {
+    let dst = Config::new("openfhe-wrapper").build();
+
+    dst
+}
+
+fn run_bindgen(dst: PathBuf) {
     let bindings = bindgen::Builder::default()
         // The input header we would like to generate
         // bindings for.
@@ -48,4 +50,9 @@ fn main() {
     bindings
         .write_to_file(out_path.join("bindings.rs"))
         .expect("Couldn't write bindings!");
+}
+
+fn main() {
+    let dst_openfhe = build_openfhe();
+    let _dst_wrapper = build_wrapper(dst_openfhe);
 }

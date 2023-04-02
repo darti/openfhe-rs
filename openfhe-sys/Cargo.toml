@@ -8,4 +8,5 @@ edition = "2021"
 
 [build-dependencies]
 bindgen = "0.64"
+cc = { version = "1", features = ["parallel"] }
 cmake = "0.1"
