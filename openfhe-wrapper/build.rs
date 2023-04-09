@@ -49,14 +49,6 @@ fn main() {
         println!("cargo:rustc-link-search={}/lib", lib.to_str().unwrap());
     }
 
-    // if let Some(lib) = std::env::var_os("DEP_OPENMP_FLAG") {
-    //     println!("cargo:rustc-flags={}", lib.to_str().unwrap());
-    // }
-
     println!("cargo:rustc-link-lib=static=openfhe-wrapper");
     println!("cargo:rustc-flags=-l dylib=c++");
-
-    println!("cargo:rustc-link-lib=static={}", "omp");
-
-    // println!("cargo:rustc-link-lib=static-nobundle=stdc++");
 }

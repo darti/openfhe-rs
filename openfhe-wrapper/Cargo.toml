@@ -10,8 +10,4 @@ bindgen = "0.64"
 cmake = "0.1"
 
 [dependencies]
-openmp-sys = { version = "1.2", features = ["static"] }
 openfhe-sys = { version = "*", path = "../openfhe-sys" }
-
-[dev-dependencies]
-openmp-sys = { version = "1.2", features = ["static"] }
