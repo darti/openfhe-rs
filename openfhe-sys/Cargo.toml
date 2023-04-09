@@ -8,6 +8,7 @@ links = "openfhe"
 [build-dependencies]
 openmp-sys = { version = "1.2", features = ["static"] }
 cmake = "0.1"
+bindgen = "0.64"
 
 [dependencies]
 openmp-sys = { version = "1.2", features = ["static"] }
