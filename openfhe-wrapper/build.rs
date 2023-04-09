@@ -3,6 +3,9 @@ use std::{env, path::PathBuf};
 use cmake::Config;
 
 fn build_wrapper() -> PathBuf {
+    for (key, value) in env::vars() {
+        println!("{}: {:?}", key, value);
+    }
     let mut cfg = Config::new("wrapper");
 
     if let Some(include) = std::env::var_os("DEP_OPENFHE_INCLUDE") {
@@ -12,8 +15,6 @@ fn build_wrapper() -> PathBuf {
     for (key, value) in env::vars() {
         println!("{}: {:?}", key, value);
     }
-
-    println!("DEP_Z_INCLUDE: {:?}", std::env::var_os("DEP_Z_INCLUDE"));
 
     cfg.build()
 }
@@ -39,6 +40,23 @@ fn generate_binding() {
 }
 
 fn main() {
-    let _dst = build_wrapper();
+    let dst = build_wrapper();
     generate_binding();
+
+    println!("cargo:rustc-link-search={}", dst.display());
+
+    if let Some(lib) = std::env::var_os("DEP_OPENFHE_ROOT") {
+        println!("cargo:rustc-link-search={}/lib", lib.to_str().unwrap());
+    }
+
+    // if let Some(lib) = std::env::var_os("DEP_OPENMP_FLAG") {
+    //     println!("cargo:rustc-flags={}", lib.to_str().unwrap());
+    // }
+
+    println!("cargo:rustc-link-lib=static=openfhe-wrapper");
+    println!("cargo:rustc-flags=-l dylib=c++");
+
+    println!("cargo:rustc-link-lib=static={}", "omp");
+
+    // println!("cargo:rustc-link-lib=static-nobundle=stdc++");
 }

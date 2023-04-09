@@ -1,2 +1,2 @@
 [workspace]
-members = ["openfhe-sys", "openfhe-wrapper", "openfhe"]
+members = ["openfhe-sys", "openfhe-wrapper"]

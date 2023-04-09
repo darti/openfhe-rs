@@ -1,4 +1,7 @@
+typedef void *pParamsCKKS;
+
 extern "C"
 {
-    typedef void *pParamsCKKS;
+
+    pParamsCKKS *params_new();
 }

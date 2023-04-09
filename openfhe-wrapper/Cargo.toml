@@ -2,6 +2,7 @@
 name = "openfhe-wrapper"
 version = "0.1.0"
 edition = "2021"
+links = "openfhe-wrapper"
 
 
 [build-dependencies]
@@ -9,4 +10,8 @@ bindgen = "0.64"
 cmake = "0.1"
 
 [dependencies]
+openmp-sys = { version = "1.2", features = ["static"] }
 openfhe-sys = { version = "*", path = "../openfhe-sys" }
+
+[dev-dependencies]
+openmp-sys = { version = "1.2", features = ["static"] }

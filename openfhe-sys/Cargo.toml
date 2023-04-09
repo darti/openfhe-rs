@@ -4,5 +4,10 @@ version = "0.1.0"
 edition = "2021"
 links = "openfhe"
 
+
 [build-dependencies]
+openmp-sys = { version = "1.2", features = ["static"] }
 cmake = "0.1"
+
+[dependencies]
+openmp-sys = { version = "1.2", features = ["static"] }
