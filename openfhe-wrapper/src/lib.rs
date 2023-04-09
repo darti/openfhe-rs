@@ -15,3 +15,9 @@ impl Default for CKKSParams {
         }
     }
 }
+
+impl CKKSParams {
+    pub fn set_multiply_depth(&mut self, depth: u32) {
+        unsafe { params_set_multiplication_depth(self.inner, depth) }
+    }
+}
