@@ -17,12 +17,24 @@ impl Default for CKKSParams {
 }
 
 impl CKKSParams {
+    pub fn get_multiply_depth(&self) -> u32 {
+        unsafe { params_get_multiplication_depth(self.inner) }
+    }
+
     pub fn set_multiply_depth(&mut self, depth: u32) {
         unsafe { params_set_multiplication_depth(self.inner, depth) }
     }
 
+    pub fn get_scale_mod_size(&self) -> u32 {
+        unsafe { params_get_scaling_mod_size(self.inner) }
+    }
+
     pub fn set_scale_mod_size(&mut self, size: u32) {
         unsafe { params_set_scaling_mod_size(self.inner, size) }
+    }
+
+    pub fn get_batch_size(&self) -> u32 {
+        unsafe { params_get_batch_size(self.inner) }
     }
 
     pub fn set_batch_size(&mut self, size: u32) {
@@ -35,9 +47,9 @@ pub struct CryptoContext {
 }
 
 impl CryptoContext {
-    pub fn new(params: &mut CKKSParams) -> Self {
+    pub fn new(params: &CKKSParams) -> Self {
         Self {
-            inner: unsafe { crypto_context_new(&mut params.inner) },
+            inner: unsafe { crypto_context_new(params.inner) },
         }
     }
 }

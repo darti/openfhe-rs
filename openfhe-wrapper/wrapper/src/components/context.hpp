@@ -1,11 +1,8 @@
 #include "parameters.hpp"
 
-typedef struct
-{
-    void *context;
-} pCryptoContext;
+typedef void *pCryptoContext;
 
 extern "C"
 {
-    pCryptoContext crypto_context_new(pParamsCKKS *params);
+    pCryptoContext crypto_context_new(pParamsCKKS params);
 }

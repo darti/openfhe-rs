@@ -4,10 +4,11 @@
 
 using namespace lbcrypto;
 
-pCryptoContext crypto_context_new(pParamsCKKS *params)
+pCryptoContext crypto_context_new(pParamsCKKS params)
 {
     auto p = reinterpret_cast<CCParams<CryptoContextCKKSRNS> *>(params);
-    CryptoContext<DCRTPoly> c = GenCryptoContext(*p);
 
-    return pCryptoContext{c.get()};
+    CryptoContext<DCRTPoly> cc = GenCryptoContext(*p);
+
+    return cc.get();
 }
