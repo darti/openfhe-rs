@@ -20,4 +20,8 @@ impl CKKSParams {
     pub fn set_multiply_depth(&mut self, depth: u32) {
         unsafe { params_set_multiplication_depth(self.inner, depth) }
     }
+
+    pub fn set_scale_mod_size(&mut self, size: u32) {
+        unsafe { params_set_scaling_mod_size(self.inner, size) }
+    }
 }

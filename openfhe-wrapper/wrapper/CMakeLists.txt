@@ -47,10 +47,11 @@ else()
 endif()
 
 
-
 add_library(openfhe-wrapper STATIC
-    src/wrapper.cpp
     src/wrapper.hpp
+    src/components/parameters.hpp
+    src/components/parameters.cpp
+
 )
 
 install (TARGETS openfhe-wrapper DESTINATION .)

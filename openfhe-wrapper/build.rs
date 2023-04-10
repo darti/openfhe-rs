@@ -40,10 +40,7 @@ fn generate_binding() {
 }
 
 fn main() {
-    let dst = build_wrapper();
-    generate_binding();
-
-    println!("cargo:rustc-link-search={}", dst.display());
+    println!("cargo:rerun-if-changed=wrapper.h");
 
     if let Some(lib) = std::env::var_os("DEP_OPENFHE_ROOT") {
         println!("cargo:rustc-link-search={}/lib", lib.to_str().unwrap());
@@ -51,4 +48,9 @@ fn main() {
 
     println!("cargo:rustc-link-lib=static=openfhe-wrapper");
     println!("cargo:rustc-flags=-l dylib=c++");
+
+    let dst = build_wrapper();
+
+    println!("cargo:rustc-link-search={}", dst.display());
+    generate_binding();
 }
