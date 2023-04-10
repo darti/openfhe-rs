@@ -1,5 +1,3 @@
-use std::env;
-
 use cmake::Config;
 
 // Options
@@ -23,7 +21,6 @@ fn main() {
 
     println!("cargo:rustc-link-search={}/build/lib", dst.display());
     println!("cargo:rustc-link-search=native=/opt/homebrew/opt/libomp/lib");
-    println!("cargo:rustc-link-search=native=/usr/local/opt/libomp/lib");
 
     println!("cargo:rustc-link-lib=static={}_static", OPENFHE_CORE);
     println!("cargo:rustc-link-lib=static={}_static", OPENFHE_PKE);

@@ -51,6 +51,8 @@ add_library(openfhe-wrapper STATIC
     src/wrapper.hpp
     src/components/parameters.hpp
     src/components/parameters.cpp
+    src/components/context.hpp
+    src/components/context.cpp
 
 )
 

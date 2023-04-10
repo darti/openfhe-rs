@@ -2,6 +2,10 @@ use std::{env, path::PathBuf};
 
 use cmake::Config;
 
+const OPENFHE_CORE: &str = "OPENFHEcore";
+const OPENFHE_PKE: &str = "OPENFHEpke";
+const OPENFHE_BIN: &str = "OPENFHEbinfhe";
+
 fn build_wrapper() -> PathBuf {
     for (key, value) in env::vars() {
         println!("{}: {:?}", key, value);
@@ -53,4 +57,11 @@ fn main() {
 
     println!("cargo:rustc-link-search={}", dst.display());
     generate_binding();
+
+    println!("cargo:rustc-link-lib=static={}_static", OPENFHE_CORE);
+    println!("cargo:rustc-link-lib=static={}_static", OPENFHE_PKE);
+    println!("cargo:rustc-link-lib=static={}_static", OPENFHE_BIN);
+
+    println!("cargo:rustc-link-search=native=/opt/homebrew/opt/libomp/lib");
+    println!("cargo:rustc-link-lib=static={}", "omp");
 }

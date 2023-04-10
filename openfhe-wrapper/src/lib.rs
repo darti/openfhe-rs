@@ -5,7 +5,7 @@
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
 pub struct CKKSParams {
-    inner: *mut pParamsCKKS,
+    inner: pParamsCKKS,
 }
 
 impl Default for CKKSParams {
@@ -23,5 +23,21 @@ impl CKKSParams {
 
     pub fn set_scale_mod_size(&mut self, size: u32) {
         unsafe { params_set_scaling_mod_size(self.inner, size) }
+    }
+
+    pub fn set_batch_size(&mut self, size: u32) {
+        unsafe { params_set_batch_size(self.inner, size) }
+    }
+}
+
+pub struct CryptoContext {
+    inner: pCryptoContext,
+}
+
+impl CryptoContext {
+    pub fn new(params: &mut CKKSParams) -> Self {
+        Self {
+            inner: unsafe { crypto_context_new(&mut params.inner) },
+        }
     }
 }
