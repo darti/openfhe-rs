@@ -20,31 +20,39 @@ fn build_wrapper() -> PathBuf {
     cfg.build()
 }
 
-fn generate_binding() {
-    let includes = if let Some(lib) = std::env::var_os("DEP_OPENFHE_ROOT") {
-        vec![
-            format!("-I{}/include/openfhe", lib.to_str().unwrap()),
-            format!("-I{}/include/openfhe/core", lib.to_str().unwrap()),
-            format!("-I{}/include/openfhe/pke", lib.to_str().unwrap()),
-            format!("-I{}/include/openfhe/binfhe", lib.to_str().unwrap()),
-        ]
-    } else {
-        vec![]
-    };
-
+fn generate_binding(openfhe_root: &str) {
     let bindings = bindgen::Builder::default()
         // The input header we would like to generate
         // bindings for.
         .blocklist_file(" /Users/matthieudartiguenave/Projects/etf/openfhe-rs/target/debug/build/openfhe-sys-f494f1d17fc0f95b/out/include/openfhe/core/math/**/*")
         .header("wrapper/src/wrapper.hpp")
-        .clang_arg("-std=c++17")
-        .clang_arg("-D MATHBACKEND=4")
-        .clang_args(includes)
-        .opaque_type("std::*")
-        
+        .clang_arg("-Fpath/to/dir")
         // Tell cargo to invalidate the built crate whenever any of the
         // included header files changed.
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+        .clang_arg("-std=c++17")
+        .clang_arg("-D MATHBACKEND=4")
+        .opaque_type("std::*")
+        .clang_args([
+            format!("-F{}/include/openfhe", openfhe_root),
+            format!("-F{}/include/openfhe/core", openfhe_root),
+            format!("-F{}/include/openfhe/pke", openfhe_root),
+            format!("-F{}/include/openfhe/binfhe", openfhe_root),
+        ])
+        // allowlist
+        .allowlist_file(".*wrapper.hpp")
+        .allowlist_file(".*parameters.hpp")
+        .allowlist_file(".*context.hpp")
+        .allowlist_file(".*scheme/ckksrns/.*")
+        .allowlist_file(".*pke/constants.h")
+        .allowlist_file(".*pke/.*cryptocontext.*.h")
+        .allowlist_file(".*utils/.*")
+        // blacklist
+        .blocklist_file(".*math/.*")
+        .blocklist_file(".*lattice/.*")
+        .blocklist_file(".*utils/.*")
+        .blocklist_file(".*cereal/.*")
+        .blocklist_file(".*lbcrypto/.*")
         // Finish the builder and generate the bindings.
         .generate()
         // Unwrap the Result and panic on failure.
@@ -60,9 +68,10 @@ fn generate_binding() {
 fn main() {
     println!("cargo:rerun-if-changed=wrapper.h");
 
-    if let Some(lib) = std::env::var_os("DEP_OPENFHE_ROOT") {
-        println!("cargo:rustc-link-search={}/lib", lib.to_str().unwrap());
-    }
+    let openfhe_root = std::env::var_os("DEP_OPENFHE_ROOT").unwrap();
+    let openfhe_root = openfhe_root.to_str().unwrap();
+
+    println!("cargo:rustc-link-search={}/lib", openfhe_root);
 
     println!("cargo:rustc-link-lib=static=openfhe-wrapper");
     println!("cargo:rustc-flags=-l dylib=c++");
@@ -70,7 +79,7 @@ fn main() {
     // let dst = build_wrapper();
 
     // println!("cargo:rustc-link-search={}", dst.display());
-    generate_binding();
+    generate_binding(openfhe_root);
 
     println!("cargo:rustc-link-lib=static={}_static", OPENFHE_CORE);
     println!("cargo:rustc-link-lib=static={}_static", OPENFHE_PKE);
