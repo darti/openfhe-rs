@@ -2,7 +2,7 @@
 name = "openfhe-wrapper"
 version = "0.1.0"
 edition = "2021"
-links = "openfhe-wrapper"
+# links = "openfhe-wrapper"
 
 
 [build-dependencies]

@@ -43,16 +43,16 @@ fn generate_binding(openfhe_root: &str) {
         .allowlist_file(".*wrapper.hpp")
         .allowlist_file(".*parameters.hpp")
         .allowlist_file(".*context.hpp")
-        .allowlist_file(".*scheme/ckksrns/.*")
-        .allowlist_file(".*pke/constants.h")
-        .allowlist_file(".*pke/.*cryptocontext.*.h")
+        .allowlist_file(".*scheme/.*")
+        .allowlist_file(".*pke/constants\\.h")
+        .allowlist_file(".*pke/.*cryptocontext.*\\.h")
         .allowlist_file(".*utils/.*")
         // blacklist
-        .blocklist_file(".*math/.*")
-        .blocklist_file(".*lattice/.*")
-        .blocklist_file(".*utils/.*")
+        // .blocklist_file(".*math/.*")
+        // .blocklist_file(".*lattice/.*")
+        // .blocklist_file(".*utils/.*")
         .blocklist_file(".*cereal/.*")
-        .blocklist_file(".*lbcrypto/.*")
+        // .blocklist_file(".*lbcrypto/.*")
         // Finish the builder and generate the bindings.
         .generate()
         // Unwrap the Result and panic on failure.
@@ -73,7 +73,7 @@ fn main() {
 
     println!("cargo:rustc-link-search={}/lib", openfhe_root);
 
-    println!("cargo:rustc-link-lib=static=openfhe-wrapper");
+    // println!("cargo:rustc-link-lib=static=openfhe-wrapper");
     println!("cargo:rustc-flags=-l dylib=c++");
 
     // let dst = build_wrapper();

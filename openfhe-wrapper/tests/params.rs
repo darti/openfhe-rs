@@ -1,4 +1,4 @@
-use openfhe_wrapper::CKKSParams;
+use openfhe_wrapper::lbcrypto_CCParams;
 
 #[test]
 fn create_params() {
@@ -7,7 +7,7 @@ fn create_params() {
 
 #[test]
 fn set_params() {
-    let mut params = CKKSParams::default();
+    let mut params = lbcrypto_CCParams {};
 
     params.set_multiply_depth(1);
     assert!(params.get_multiply_depth() == 1);
